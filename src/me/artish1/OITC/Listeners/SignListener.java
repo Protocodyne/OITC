@@ -80,13 +80,13 @@ public class SignListener implements Listener{
 		          e.setLine(2, ChatColor.DARK_RED + "Ingame");
 		        } else {
 		        	if(arena.getState() == GameState.LOBBY){
-		          e.setLine(2, ChatColor.GREEN + "Waiting");
+		          e.setLine(2, ChatColor.GREEN + "대기중");
 		        	}else{
 		        		if(arena.getState() == GameState.STOPPING){
-		      	          e.setLine(2, ChatColor.RED + "Stopping");
+		      	          e.setLine(2, ChatColor.RED + "정지중");
 		        		}else{
 		        			if(arena.getState() == GameState.STARTING){
-		        		          e.setLine(2, ChatColor.AQUA + "Starting");
+		        		          e.setLine(2, ChatColor.AQUA + "시작중");
 		        			}
 		        		}
 		        	}
@@ -115,8 +115,8 @@ public class SignListener implements Listener{
 			        sign.update();
 			        
 			        if(Arenas.isInArena(player)){
-			        	player.sendMessage(ChatColor.RED + "You are already in an Arena!");
-			        	player.sendMessage(ChatColor.GRAY + "If you would like to leave the current arena you are in, do /oitc leave");
+			        	player.sendMessage(ChatColor.RED + "당신은 이미 해당맵 안에 있습니다!");
+			        	player.sendMessage(ChatColor.GRAY + "현재맵에서 나가고 싶다면 /oitc leave 명령어를 사용하세요")
 			        	return;
 			        }
 			        
@@ -131,7 +131,7 @@ public class SignListener implements Listener{
 			        					
 			        					
 			        				}else{
-			        					player.sendMessage(ChatColor.RED + "Sorry! That Arena is full!");
+			        					player.sendMessage(ChatColor.RED + "죄송합니다! 현재맵은 꽉찼습니다!");
 			        				}
 			        				
 			        				

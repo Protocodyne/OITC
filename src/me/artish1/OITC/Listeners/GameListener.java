@@ -1,17 +1,17 @@
 package me.artish1.OITC.Listeners;
 
+import java.util.UUID;
 import me.artish1.OITC.OITC;
 import me.artish1.OITC.Arena.Arena;
 import me.artish1.OITC.Arena.Arenas;
 import me.artish1.OITC.Arena.LeaveReason;
 import me.artish1.OITC.Utils.Methods;
-import net.minecraft.server.v1_7_R4.EnumClientCommand;
-import net.minecraft.server.v1_7_R4.PacketPlayInClientCommand;
-
+import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand;
+import net.minecraft.server.v1_8_R3.PacketPlayInClientCommand.EnumClientCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
@@ -41,7 +41,7 @@ public class GameListener implements Listener{
 	
 		this.plugin = plugin;
 	}
-	
+
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e){
 		final Player player = e.getPlayer();
@@ -182,7 +182,7 @@ public class GameListener implements Listener{
 	public void onPlayerKill(Player killer, Player player){
 		Arena arena = Arenas.getArena(killer);
 		killer.sendMessage(ChatColor.GRAY + "You have killed " + ChatColor.AQUA + player.getName());
-		player.sendMessage(ChatColor.DARK_RED + killer.getName() + ChatColor.GRAY + " Has killed you!");
+		player.sendMessage(ChatColor.DARK_RED + killer.getName() + ChatColor.GRAY + " 가 당신을 죽였습니다!");
 		
 		Methods.addArrow(killer);
 		
@@ -208,14 +208,26 @@ public class GameListener implements Listener{
 
 
 			arena.sendAll(ChatColor.RED + killer.getName() + ChatColor.GRAY +
-					" Has reached the kill goal of " + ChatColor.GOLD + arena.getKillsToWin() + ChatColor.GRAY + 
-					" and has won in the Arena: " + ChatColor.AQUA + arena.getName());
+					" 가 목표킬수에 도달하였습니다. " + ChatColor.GOLD + arena.getKillsToWin() + ChatColor.GRAY + 
+					" 그리고 이 게임에서 승리하였습니다.: " + ChatColor.AQUA + arena.getName());
 			arena.sendAll(ChatColor.GREEN +"================" + ChatColor.GRAY + "[" + ChatColor.AQUA + "OITC" + ChatColor.GRAY + "]" +ChatColor.GREEN +  "================");
 			
 			arena.sendAll("");
 			arena.sendAll("");
-
-			
+                        //PALYERPOINTS
+                        for(UUID i : arena.getPlayers()){
+                            if (Bukkit.getPlayer(i) == null) {
+                                
+                            }
+                            else if(i == killer.getUniqueId()){
+                                killer.sendMessage(ChatColor.GREEN +"Zorionak! " + ChatColor.GOLD + "50" + ChatColor.GREEN + "puntu irabazi dituzu!");
+                                OITC.getPlayerPoints().getAPI().give(killer.getUniqueId(), 100);
+                            }
+                            else{
+                                Bukkit.getPlayer(i).sendMessage(ChatColor.GREEN +"Zorionak! " + ChatColor.GOLD + "25 " + ChatColor.GREEN + "puntu irabazi dituzu!");
+                                OITC.getPlayerPoints().getAPI().give(i, 25);  
+                            }           
+                        }
 			arena.stop();
 			
 			
@@ -239,8 +251,8 @@ public class GameListener implements Listener{
 						!e.getMessage().equalsIgnoreCase("/oitc leave")){
 					
 					e.setCancelled(true);
-					OITC.sendMessage(player, "You cannot do any other commands besides the default /oitc commands");
-					OITC.sendMessage(player, "if you would like to leave, please do " + ChatColor.RED + "/oitc leave , OR /oitc lobby");
+                    OITC.sendMessage(player, "/oitc commands 이외의 커맨드는 사용이 불가능합니다.");
+					OITC.sendMessage(player, "이 게임을 나가길 원한다면 " + ChatColor.RED + "/oitc leave , OR /oitc lobby 명령어를 사용하세요");
 				}
 				
 				

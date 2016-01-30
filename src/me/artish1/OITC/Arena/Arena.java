@@ -306,22 +306,22 @@ public class Arena {
 	        	  setState(GameState.STARTING);
 	        	  updateSigns();
 	            if (Arena.this.counter == 30) {
-	              sendAll(ChatColor.AQUA +"" + counter + ChatColor.GRAY + " seconds until the game starts.");
+	              sendAll(ChatColor.AQUA +"" + counter + ChatColor.GRAY + " 초 남았습니다 잠시만 기다려주세요.");
 	            }
 	            if (Arena.this.counter == 45) {
-	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " seconds until the game starts.");
+	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " 초 남았습니다 잠시만 기다려주세요.");
 	            }
 	            if (Arena.this.counter == 15) {
-	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " seconds until the game starts.");
+	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " 초 남았습니다 잠시만 기다려주세요.");
 	            }
 	            if (Arena.this.counter <= 10) {
-	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " seconds until the game starts.");
+	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " 초 남았습니다 곧 게임이 시작됩니다.");
 	            }
 	            Arena.this.counter -= 1;
 	          }
 	          else
 	          {
-	            Arena.this.sendAll(ChatColor.AQUA + "The game has started!");
+	            Arena.this.sendAll(ChatColor.AQUA + "게임이 시작되었습니다!");
 	            setState(GameState.INGAME);
 	            Arena.this.startGameTimer();
 	            Arena.this.healAll();
@@ -370,8 +370,8 @@ public class Arena {
 	        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
 	        loadInventory(player);
 	 	    player.teleport(Methods.getLobby());
-	 	    player.sendMessage(ChatColor.GREEN + "We hope you had fun :)");
-	 	    OITC.sendMessage(player, "You have been teleported back to the Main Lobby.");
+			player.sendMessage(ChatColor.GREEN + "PTS MiNiGame을 즐겨주셔서 감사합니다 :)");
+	 	    OITC.sendMessage(player, "당신은 메인 로비로 텔레포트 되었습니다.");
 	        Arenas.removeArena(player);	      }
 	    }
 	    
@@ -398,10 +398,10 @@ public class Arena {
 	    {
 	      public void run()
 	      {
-	        Arena.this.sendAll(ChatColor.GRAY + "The time limit has been reached!");
+	        Arena.this.sendAll(ChatColor.GRAY + "시간이 곧 만료됩니다!");
 	        Arena.this.stop();
 	      }
-	    }, this.plugin.getConfig().getInt(getName() + ".EndTime") * 20);
+	    }, this.plugin.getConfig().getInt(getName() + "시간만료") * 20);
 	  }
 	  
 	 
@@ -426,13 +426,13 @@ public class Arena {
 	          sign.setLine(2, ChatColor.DARK_RED + "Ingame");
 	        } else {
 	        	if(getState() == GameState.LOBBY){
-	          sign.setLine(2, ChatColor.GREEN + "Waiting");
+	          sign.setLine(2, ChatColor.GREEN + "대기중");
 	        	}else{
 	        		if(getState() == GameState.STOPPING){
-	      	          sign.setLine(2, ChatColor.RED + "Stopping");
+	      	          sign.setLine(2, ChatColor.RED + "정지중");
 	        		}else{
 	        			if(getState() == GameState.STARTING){
-	        		          sign.setLine(2, ChatColor.AQUA + "Starting");
+	        		          sign.setLine(2, ChatColor.AQUA + "시작중");
 	        			}
 	        		}
 	        	}
@@ -550,7 +550,7 @@ public class Arena {
 	    {
 	      players.add(player.getUniqueId());
 	      Arenas.addArena(player, this);
-	      sendAll(ChatColor.AQUA + player.getName() + ChatColor.GRAY + " Has joined.");
+	      sendAll(ChatColor.AQUA + player.getName() + ChatColor.GRAY + " 가 입장하였습니다.");
 	      
 	      saveInventory(player);
 	      
@@ -594,18 +594,18 @@ public class Arena {
 	    
 	    loadInventory(player);
 	    if(reason == LeaveReason.QUIT){
-	    sendAll(ChatColor.RED + player.getName() + ChatColor.GRAY + " Has quit.");
+	    sendAll(ChatColor.RED + player.getName() + ChatColor.GRAY + " 가 퇴장하였습니다.");
 	    }
 	    
 	    if(reason == LeaveReason.KICK){
-		    sendAll(ChatColor.RED + player.getName() + ChatColor.GRAY + " Has been kicked.");
+		    sendAll(ChatColor.RED + player.getName() + ChatColor.GRAY + " 가 강퇴당하였습니다.");
 	    }
 	    if(reason == LeaveReason.DEATHS){
-		    sendAll(ChatColor.RED + player.getName() + ChatColor.GRAY + " is eliminated!");
+		    sendAll(ChatColor.RED + player.getName() + ChatColor.GRAY + " 는 제거되었습니다!");
 	    }
 	    
 	    if(reason == LeaveReason.STOPPED){
-	    	player.sendMessage(ChatColor.GREEN + "We hope you had fun :)");
+	    	player.sendMessage(ChatColor.GREEN + "PTS MiNiGame을 즐겨주셔서 감사합니다 :)");
 	    }
 	    
 	    player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
@@ -616,7 +616,7 @@ public class Arena {
 	    }
 	  
 	    player.teleport(Methods.getLobby());
-	    OITC.sendMessage(player, "You have been teleported back to the Main Lobby.");
+	    OITC.sendMessage(player, "당신은 메인 로비로 텔레포트 되었습니다.");
 	    updateSigns();
 	    
 	    
