@@ -8,6 +8,7 @@ import me.artish1.OITC.Arena.Arenas;
 import me.artish1.OITC.Arena.LeaveReason;
 import me.artish1.OITC.Listeners.*;
 import me.artish1.OITC.Utils.Methods;
+import org.black_ixx.playerpoints.PlayerPoints;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -15,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -108,6 +110,7 @@ public class OITC extends JavaPlugin {
 	    Methods.loadYamls();
 		
 		super.onEnable();
+            hookPlayerPoints();
 	}
 	
 	
@@ -145,8 +148,8 @@ public class OITC extends JavaPlugin {
 		          player.sendMessage(ChatColor.GRAY + "--------" + ChatColor.AQUA + "OITC" + ChatColor.GRAY + "--------");
 		          player.sendMessage(ChatColor.GRAY + "Created By: " + ChatColor.RED + "Artish1");
 		          
-		          player.sendMessage(ChatColor.AQUA + "/oitc lobby" + ChatColor.DARK_GRAY + " || " + ChatColor.GRAY + "Teleports you to the Main Lobby");
-		          player.sendMessage(ChatColor.AQUA + "/oitc leave" + ChatColor.DARK_GRAY + " || " + ChatColor.GRAY + "Leaves the current arena you are in");
+		          player.sendMessage(ChatColor.AQUA + "/oitc lobby" + ChatColor.DARK_GRAY + " || " + ChatColor.GRAY + "메인로비로 텔레포트 합니다.");
+		          player.sendMessage(ChatColor.AQUA + "/oitc leave" + ChatColor.DARK_GRAY + " || " + ChatColor.GRAY + "현재있는 맵에서 나갑니다.");
 		          if (player.hasPermission("oitc.admin"))
 		          {
 		            player.sendMessage(ChatColor.AQUA + "/oitc create [Arena]" + ChatColor.DARK_GRAY + " || " + ChatColor.GRAY + "Creates a new Arena");
@@ -212,7 +215,7 @@ public class OITC extends JavaPlugin {
 						}
 					}else{
 						Arena arena = Arenas.getArena(player);
-						sendMessage(player, "You have left your current arena and joined the lobby.");
+						sendMessage(player, "현재맵에서 나간후에 로비로 돌아가주세요.");
 						arena.removePlayer(player, LeaveReason.QUIT);
 					}
 				}
@@ -222,7 +225,7 @@ public class OITC extends JavaPlugin {
 						Arena arena = Arenas.getArena(player);
 						arena.removePlayer(player, LeaveReason.QUIT);
 					}else{
-						sendMessage(player,"You are not in an Arena to leave from, But you will still be teleported back to the lobby!");
+						sendMessage(player,"당신은 현재 맵에서 나가지 않았습니다, 하지만 당신은 여전히 로비로 돌아가려 시도중입니다.!");
 					}
 				}
 				
@@ -231,6 +234,24 @@ public class OITC extends JavaPlugin {
 			
 			
 			if(args.length == 2){
+                            	if(args[0].equalsIgnoreCase("start")){
+					if(Arenas.arenaExists(args[1])){
+						Arena arena = Arenas.getArena(args[1]);
+						
+						if(arena.getPlayers().size() >= 2){
+							arena.start();
+							sendMessage(player,ChatColor.DARK_AQUA + arena.getName()+ "께서 게임을 시작합니다" );
+							
+						}else{
+							sendMessage(player, "Cannot start arena.");
+							sendMessage(player, "It is either ingame, stopping, or not enough players.");
+						}
+						
+						
+					}else{
+						sendMessage(player, "Sorry, there is no such arena named " + ChatColor.RED + args[1]);
+					}
+				}
 				if(player.hasPermission("oitc.admin")){
 				if(args[0].equalsIgnoreCase("create")){
 					if (!Arenas.arenaExists(args[1]))
@@ -270,27 +291,6 @@ public class OITC extends JavaPlugin {
 		            {
 		              sendMessage(player, "Sorry, there is no such arena named " + ChatColor.RED + args[1]);
 		            }
-				}
-				
-				
-				
-				if(args[0].equalsIgnoreCase("start")){
-					if(Arenas.arenaExists(args[1])){
-						Arena arena = Arenas.getArena(args[1]);
-						
-						if(arena.getPlayers().size() >= 2){
-							arena.start();
-							sendMessage(player, "You have started the arena " + ChatColor.DARK_AQUA + arena.getName());
-							
-						}else{
-							sendMessage(player, "Cannot start arena.");
-							sendMessage(player, "It is either ingame, stopping, or not enough players.");
-						}
-						
-						
-					}else{
-						sendMessage(player, "Sorry, there is no such arena named " + ChatColor.RED + args[1]);
-					}
 				}
 				
 				if(args[0].equalsIgnoreCase("stop")){
@@ -348,5 +348,14 @@ public class OITC extends JavaPlugin {
 	  {
 	    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "OITC" + ChatColor.GRAY + "] " + ChatColor.GRAY + Message);
 	  }
+         private boolean hookPlayerPoints() {
+            final Plugin plugin = this.getServer().getPluginManager().getPlugin("PlayerPoints");
+            playerPoints = PlayerPoints.class.cast(plugin);
+            return playerPoints != null; 
+}
+        private static PlayerPoints playerPoints;
+        public static PlayerPoints getPlayerPoints() {
+            return playerPoints;
+        }
 	
 }
