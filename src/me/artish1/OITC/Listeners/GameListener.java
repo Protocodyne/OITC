@@ -1,6 +1,5 @@
 package me.artish1.OITC.Listeners;
 
-import java.util.UUID;
 import me.artish1.OITC.OITC;
 import me.artish1.OITC.Arena.Arena;
 import me.artish1.OITC.Arena.Arenas;
@@ -41,7 +40,7 @@ public class GameListener implements Listener{
 	
 		this.plugin = plugin;
 	}
-
+	
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent e){
 		final Player player = e.getPlayer();
@@ -51,7 +50,6 @@ public class GameListener implements Listener{
 			
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 
-				@SuppressWarnings("deprecation")
 				public void run() {
 					player.updateInventory();
 					
@@ -63,7 +61,6 @@ public class GameListener implements Listener{
 	}
 	
 	
-	 @SuppressWarnings("deprecation")
 	 @EventHandler
 	 public void onHit(EntityDamageByEntityEvent e)
 	  {
@@ -90,7 +87,6 @@ public class GameListener implements Listener{
 	  }
 	
 	 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onProjHit(ProjectileHitEvent e){
 
@@ -112,7 +108,6 @@ public class GameListener implements Listener{
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler			(priority = EventPriority.HIGHEST)
 	public void onRespawn(PlayerRespawnEvent e){
 		Player player = e.getPlayer();
@@ -214,20 +209,8 @@ public class GameListener implements Listener{
 			
 			arena.sendAll("");
 			arena.sendAll("");
-                        //PALYERPOINTS
-                        for(UUID i : arena.getPlayers()){
-                            if (Bukkit.getPlayer(i) == null) {
-                                
-                            }
-                            else if(i == killer.getUniqueId()){
-                                killer.sendMessage(ChatColor.GREEN +"Zorionak! " + ChatColor.GOLD + "50" + ChatColor.GREEN + "puntu irabazi dituzu!");
-                                OITC.getPlayerPoints().getAPI().give(killer.getUniqueId(), 100);
-                            }
-                            else{
-                                Bukkit.getPlayer(i).sendMessage(ChatColor.GREEN +"Zorionak! " + ChatColor.GOLD + "25 " + ChatColor.GREEN + "puntu irabazi dituzu!");
-                                OITC.getPlayerPoints().getAPI().give(i, 25);  
-                            }           
-                        }
+
+			
 			arena.stop();
 			
 			

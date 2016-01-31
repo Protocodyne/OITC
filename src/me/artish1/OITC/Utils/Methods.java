@@ -38,7 +38,6 @@ public class Methods {
 	    player.getInventory().addItem(new ItemStack[] { arrow });
 	  }
 	  
-	 @SuppressWarnings("deprecation")
 	public static void setDefaultGameInventory(Player player){
 		 
 		 ItemStack bow = new ItemStack(Material.BOW, 1);
