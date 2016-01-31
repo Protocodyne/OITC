@@ -43,7 +43,6 @@ public class Arena {
 	  private HashMap<UUID,ItemStack[]> inventory = new HashMap<UUID,ItemStack[]>();
 	  
 	  
-	  @SuppressWarnings("deprecation")
 	private void saveInventory(Player player){
 		  armor.put(player.getUniqueId(), player.getInventory().getArmorContents());
 		  inventory.put(player.getUniqueId(), player.getInventory().getContents());
@@ -53,7 +52,6 @@ public class Arena {
 		  player.updateInventory();
 	  }
 	  
-	  @SuppressWarnings("deprecation")
 	private void loadInventory(Player player){
 		if(armor.containsKey(player.getUniqueId())){
 			player.getInventory().setArmorContents(armor.get(player.getUniqueId()));
@@ -306,7 +304,7 @@ public class Arena {
 	        	  setState(GameState.STARTING);
 	        	  updateSigns();
 	            if (Arena.this.counter == 30) {
-	              sendAll(ChatColor.AQUA +"" + counter + ChatColor.GRAY + " 초 남았습니다 잠시만 기다려주세요.");
+	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " 초 남았습니다 잠시만 기다려주세요.");
 	            }
 	            if (Arena.this.counter == 45) {
 	              sendAll(ChatColor.AQUA +""+ counter + ChatColor.GRAY + " 초 남았습니다 잠시만 기다려주세요.");
